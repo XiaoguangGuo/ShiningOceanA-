@@ -8,6 +8,65 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const MODEL_NAME = 'gemini-2.5-flash';
 
 /**
+ * Analyzes a product from a URL using Google Search grounding.
+ */
+export const analyzeProductFromUrl = async (url: string): Promise<{ data: Partial<ProductInfo>, sources: string[] }> => {
+  const prompt = `
+    Analyze the product sold at the following URL: ${url}
+    
+    First, search the web to find the product details, official description, key features, and target audience.
+    
+    Then, extract the following information and return it as a strictly valid JSON object:
+    {
+      "name": "Product Name",
+      "brand": "Brand Name",
+      "description": "A detailed and persuasive product description based on the page content.",
+      "keyFeatures": ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
+      "targetAudience": "Describe the ideal customer for this product.",
+      "tone": "The brand tone (e.g. Professional, Fun, Luxury, Technical)"
+    }
+    
+    Return ONLY the JSON object. Do not include markdown code blocks like \`\`\`json.
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: MODEL_NAME,
+      contents: prompt,
+      config: {
+        // Use Google Search to find info about the link
+        tools: [{ googleSearch: {} }],
+        // responseMimeType and responseSchema are NOT allowed when using googleSearch
+      }
+    });
+
+    let text = response.text || "";
+    
+    // Clean up markdown if the model ignores the "no markdown" instruction
+    text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start !== -1 && end !== -1) {
+        text = text.substring(start, end + 1);
+    }
+
+    const data = JSON.parse(text) as Partial<ProductInfo>;
+
+    // Extract sources from grounding metadata
+    const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks
+      ?.map((chunk: any) => chunk.web?.uri)
+      .filter((uri: string) => !!uri) || [];
+
+    return { data, sources };
+
+  } catch (error) {
+    console.error("Gemini Analysis Error:", error);
+    throw error;
+  }
+};
+
+/**
  * Generates content for a specific A+ module based on product info.
  */
 export const generateModuleContent = async (

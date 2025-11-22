@@ -9,6 +9,7 @@ export enum ModuleType {
 }
 
 export interface ProductInfo {
+  url?: string;
   name: string;
   brand: string;
   description: string;

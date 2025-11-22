@@ -11,6 +11,7 @@ import ModuleEditor from './components/ModuleEditor';
 const App: React.FC = () => {
   // --- State ---
   const [productInfo, setProductInfo] = useState<ProductInfo>({
+    url: '',
     name: '',
     brand: '',
     description: '',
@@ -28,6 +29,7 @@ const App: React.FC = () => {
   // Demo Autofill
   const fillDemoData = () => {
     setProductInfo({
+      url: 'https://www.amazon.com/dp/B07X...',
       name: 'ErgoLift Pro Standing Desk Converter',
       brand: 'OfficeZen',
       description: 'Transform your workspace with the ErgoLift Pro. This height-adjustable desk converter sits on top of your existing desk, allowing you to switch between sitting and standing in seconds. Features a spacious 32" surface, keyboard tray, and smooth gas spring lift mechanism.',
@@ -155,7 +157,7 @@ const App: React.FC = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">at Hyperspeed</span>
           </h1>
           <p className="text-gray-600 text-lg">
-            Input your product details, choose a strategy, and let AI structure your Amazon narrative.
+            Input your product URL or details, choose a strategy, and let AI structure your Amazon narrative.
           </p>
         </div>
 
