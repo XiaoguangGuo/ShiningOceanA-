@@ -1,5 +1,5 @@
 import { ModuleType, Template } from './types';
-import { Layout, Image, List, Grid, Type, BarChart3, FileText } from 'lucide-react';
+import { Layout, Image, List, Grid, Type, BarChart3, FileText, Star } from 'lucide-react';
 
 export const MODULE_DEFINITIONS: Record<ModuleType, { name: string; icon: any; dimensions: string; description: string }> = {
   [ModuleType.COMPANY_LOGO]: {
@@ -13,6 +13,12 @@ export const MODULE_DEFINITIONS: Record<ModuleType, { name: string; icon: any; d
     icon: Layout,
     dimensions: '970 x 600 px',
     description: 'High impact visual with overlay or side text for storytelling.'
+  },
+  [ModuleType.KEY_PROPOSITION]: {
+    name: 'Core Value Spotlight',
+    icon: Star,
+    dimensions: '300 x 300 px (Image)',
+    description: 'Dedicated focus on your #1 most important selling point.'
   },
   [ModuleType.SINGLE_IMAGE_HIGHLIGHTS]: {
     name: 'Standard Image & Highlights',
@@ -54,6 +60,7 @@ export const STRATEGIES: Template[] = [
     modules: [
       ModuleType.COMPANY_LOGO,
       ModuleType.HEADER_IMAGE_TEXT,
+      ModuleType.KEY_PROPOSITION,
       ModuleType.THREE_IMAGES_TEXT,
       ModuleType.HEADER_IMAGE_TEXT,
       ModuleType.COMPANY_LOGO
@@ -66,6 +73,7 @@ export const STRATEGIES: Template[] = [
     modules: [
       ModuleType.COMPANY_LOGO,
       ModuleType.HEADER_IMAGE_TEXT,
+      ModuleType.KEY_PROPOSITION,
       ModuleType.SINGLE_IMAGE_HIGHLIGHTS,
       ModuleType.FOUR_IMAGES_TEXT,
       ModuleType.COMPARISON_CHART
@@ -77,6 +85,7 @@ export const STRATEGIES: Template[] = [
     description: 'Highlight user pain points and how your product solves them.',
     modules: [
       ModuleType.HEADER_IMAGE_TEXT, // The Problem
+      ModuleType.KEY_PROPOSITION,   // The Core Solution
       ModuleType.THREE_IMAGES_TEXT, // The Solution features
       ModuleType.HEADER_IMAGE_TEXT, // The Outcome (Lifestyle)
       ModuleType.COMPARISON_CHART

@@ -20,6 +20,7 @@ export const analyzeProductFromUrl = async (url: string): Promise<{ data: Partia
     {
       "name": "Product Name",
       "brand": "Brand Name",
+      "primaryMessage": "What is the single most important thing the customer needs to know? (The Unique Selling Proposition)",
       "description": "A detailed and persuasive product description based on the page content.",
       "keyFeatures": ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
       "targetAudience": "Describe the ideal customer for this product.",
@@ -82,6 +83,7 @@ export const generateModuleContent = async (
     Product Context:
     Name: ${product.name}
     Brand: ${product.brand}
+    Primary Key Message (USP): ${product.primaryMessage}
     Description: ${product.description}
     Key Features: ${product.keyFeatures.join(', ')}
     Target Audience: ${product.targetAudience}
@@ -97,7 +99,6 @@ export const generateModuleContent = async (
   switch (moduleType) {
     case ModuleType.COMPANY_LOGO:
         // Logo usually doesn't need text generation, but maybe alt text or a brief usage note?
-        // We'll just return a generic structure, maybe for the 'brand story' blurb if applicable, but mostly image prompt.
          responseSchema = {
             type: Type.OBJECT,
             properties: {
@@ -116,6 +117,30 @@ export const generateModuleContent = async (
           imagePrompt: { type: Type.STRING, description: "Detailed visual description for the banner image (970x600)." }
         },
         required: ["headline", "body", "imagePrompt"]
+      };
+      break;
+    
+    case ModuleType.KEY_PROPOSITION:
+      responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            headline: { type: Type.STRING, description: "A powerful headline stating the #1 benefit." },
+            body: { type: Type.STRING, description: "Persuasive text explaining why this specific feature changes everything for the user." },
+            subItems: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                         headline: { type: Type.STRING, description: "Supporting point header" },
+                         body: { type: Type.STRING, description: "Supporting point detail" },
+                    },
+                    required: ["headline", "body"]
+                },
+                description: "3 key reasons why this main proposition is true."
+            },
+            imagePrompt: { type: Type.STRING, description: "A heroic close-up or action shot demonstrating this specific core benefit (300x300)." }
+        },
+        required: ["headline", "body", "subItems", "imagePrompt"]
       };
       break;
 
@@ -207,9 +232,13 @@ export const generateModuleContent = async (
   }
 
   try {
+    const extraPrompt = moduleType === ModuleType.KEY_PROPOSITION 
+        ? ` THIS MODULE IS THE MOST IMPORTANT. FOCUS ENTIRELY ON: "${product.primaryMessage}". Make it shine.`
+        : "";
+
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
-      contents: prompt,
+      contents: prompt + extraPrompt,
       config: {
         systemInstruction: systemInstruction,
         responseMimeType: "application/json",

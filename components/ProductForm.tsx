@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ProductInfo } from '../types';
-import { Save, Sparkles, Link, Search, Loader2, ExternalLink } from 'lucide-react';
+import { Save, Sparkles, Link, Search, Loader2, ExternalLink, Star } from 'lucide-react';
 import { analyzeProductFromUrl } from '../services/geminiService';
 
 interface Props {
@@ -36,6 +36,7 @@ const ProductForm: React.FC<Props> = ({ productInfo, setProductInfo, onGenerateD
         ...prev,
         name: data.name || prev.name,
         brand: data.brand || prev.brand,
+        primaryMessage: data.primaryMessage || prev.primaryMessage,
         description: data.description || prev.description,
         keyFeatures: data.keyFeatures || prev.keyFeatures,
         targetAudience: data.targetAudience || prev.targetAudience,
@@ -131,6 +132,22 @@ const ProductForm: React.FC<Props> = ({ productInfo, setProductInfo, onGenerateD
             placeholder="e.g. BrightSmile"
           />
         </div>
+      </div>
+      
+      {/* Primary Message Input */}
+      <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+        <label className="block text-sm font-bold text-gray-800 mb-1 flex items-center gap-2">
+           <Star size={16} className="text-yellow-500" fill="currentColor" />
+           What do you want the customer to know mostly?
+        </label>
+        <p className="text-xs text-gray-500 mb-2">This is your main "Key Proposition" or "Unique Selling Point" (USP).</p>
+        <textarea
+            value={productInfo.primaryMessage}
+            onChange={(e) => handleChange('primaryMessage', e.target.value)}
+            rows={2}
+            className="w-full px-3 py-2 border border-yellow-200 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition-all"
+            placeholder="e.g. The only standing desk that lifts 50lbs with zero effort using hydraulic power."
+        />
       </div>
 
       <div>

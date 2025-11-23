@@ -1,6 +1,7 @@
 export enum ModuleType {
   COMPANY_LOGO = 'COMPANY_LOGO',
   HEADER_IMAGE_TEXT = 'HEADER_IMAGE_TEXT',
+  KEY_PROPOSITION = 'KEY_PROPOSITION',
   SINGLE_IMAGE_HIGHLIGHTS = 'SINGLE_IMAGE_HIGHLIGHTS',
   THREE_IMAGES_TEXT = 'THREE_IMAGES_TEXT',
   FOUR_IMAGES_TEXT = 'FOUR_IMAGES_TEXT',
@@ -12,6 +13,7 @@ export interface ProductInfo {
   url?: string;
   name: string;
   brand: string;
+  primaryMessage: string;
   description: string;
   keyFeatures: string[];
   targetAudience: string;

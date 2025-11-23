@@ -28,7 +28,7 @@ const ModuleEditor: React.FC<Props> = ({ moduleData, onUpdate, onDelete, onGener
       {/* Header */}
       <div className="bg-gray-50 px-6 py-4 flex justify-between items-center border-b border-gray-100">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
-            <div className="bg-white p-2 rounded-lg shadow-sm text-gray-600">
+            <div className={`p-2 rounded-lg shadow-sm ${moduleData.type === ModuleType.KEY_PROPOSITION ? 'bg-yellow-100 text-yellow-600' : 'bg-white text-gray-600'}`}>
                 <def.icon size={20} />
             </div>
             <div>
@@ -168,6 +168,32 @@ const ModuleEditor: React.FC<Props> = ({ moduleData, onUpdate, onDelete, onGener
                          )}
                     </div>
                  )}
+                 
+                 {/* Single Image & Highlight (Sidebar) Style - Also used for Key Proposition */}
+                 {(moduleData.type === ModuleType.SINGLE_IMAGE_HIGHLIGHTS || moduleData.type === ModuleType.KEY_PROPOSITION) && (
+                    <div className="w-full h-full p-4 flex gap-4 items-center">
+                        <div className="w-1/3 aspect-square bg-gray-200 rounded flex items-center justify-center relative">
+                            <Camera size={20} className="text-gray-400" />
+                            {moduleData.type === ModuleType.KEY_PROPOSITION && (
+                                <div className="absolute top-0 right-0 p-1 bg-yellow-400 rounded-bl-lg">
+                                    <Sparkles size={12} className="text-white"/>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                            <div className="h-4 w-3/4 bg-gray-300 rounded mb-2"></div>
+                            <div className="space-y-1">
+                                <div className="h-2 w-full bg-gray-100 rounded"></div>
+                                <div className="h-2 w-full bg-gray-100 rounded"></div>
+                                <div className="h-2 w-5/6 bg-gray-100 rounded"></div>
+                            </div>
+                            <div className="space-y-1 mt-2">
+                                <div className="h-2 w-1/2 bg-gray-200 rounded"></div>
+                                <div className="h-2 w-1/2 bg-gray-200 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                 )}
 
                  {/* Standard 3/4 Images Style */}
                  {(moduleData.type === ModuleType.THREE_IMAGES_TEXT || moduleData.type === ModuleType.FOUR_IMAGES_TEXT) && (
@@ -187,7 +213,7 @@ const ModuleEditor: React.FC<Props> = ({ moduleData, onUpdate, onDelete, onGener
                  )}
 
                  {/* Default fallback */}
-                 {![ModuleType.HEADER_IMAGE_TEXT, ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT].includes(moduleData.type) && (
+                 {![ModuleType.HEADER_IMAGE_TEXT, ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT, ModuleType.SINGLE_IMAGE_HIGHLIGHTS, ModuleType.KEY_PROPOSITION].includes(moduleData.type) && (
                      <div className="text-center p-4">
                          <def.icon className="mx-auto text-gray-300 mb-2" size={48} />
                          <p className="text-gray-400 text-sm">Visual Preview</p>

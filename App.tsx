@@ -14,6 +14,7 @@ const App: React.FC = () => {
     url: '',
     name: '',
     brand: '',
+    primaryMessage: '',
     description: '',
     keyFeatures: [],
     targetAudience: '',
@@ -32,6 +33,7 @@ const App: React.FC = () => {
       url: 'https://www.amazon.com/dp/B07X...',
       name: 'ErgoLift Pro Standing Desk Converter',
       brand: 'OfficeZen',
+      primaryMessage: 'Instantly transform any desk into a sit-stand workspace without expensive installation.',
       description: 'Transform your workspace with the ErgoLift Pro. This height-adjustable desk converter sits on top of your existing desk, allowing you to switch between sitting and standing in seconds. Features a spacious 32" surface, keyboard tray, and smooth gas spring lift mechanism.',
       keyFeatures: [
         'Smooth Gas Spring Lift: Adjust height with one hand.',
@@ -60,7 +62,7 @@ const App: React.FC = () => {
       };
 
       // Initialize sub-items structure if needed
-      if ([ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT, ModuleType.COMPARISON_CHART, ModuleType.SINGLE_IMAGE_HIGHLIGHTS].includes(type)) {
+      if ([ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT, ModuleType.COMPARISON_CHART, ModuleType.SINGLE_IMAGE_HIGHLIGHTS, ModuleType.KEY_PROPOSITION].includes(type)) {
         let count = 3;
         if (type === ModuleType.FOUR_IMAGES_TEXT) count = 4;
         
@@ -84,7 +86,7 @@ const App: React.FC = () => {
         headline: '',
         body: ''
       };
-      if ([ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT, ModuleType.COMPARISON_CHART, ModuleType.SINGLE_IMAGE_HIGHLIGHTS].includes(type)) {
+      if ([ModuleType.THREE_IMAGES_TEXT, ModuleType.FOUR_IMAGES_TEXT, ModuleType.COMPARISON_CHART, ModuleType.SINGLE_IMAGE_HIGHLIGHTS, ModuleType.KEY_PROPOSITION].includes(type)) {
           base.subItems = Array(3).fill({ headline: '', body: '' });
       }
       setModules([...modules, base]);
